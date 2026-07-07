@@ -1,0 +1,1 @@
+/**\n * Interfaces para Venta\n */\n\nexport interface Venta {\n  id: string;\n  clienteId: string;\n  monedaId: string;\n  montoLocal: number;\n  tipoCambioAplicado: number;\n  montoDivisas: number;\n  comision: number;\n  montoFinal: number;\n  observaciones?: string;\n  fechaCreacion: string;\n}\n
