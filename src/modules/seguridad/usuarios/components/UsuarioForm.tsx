@@ -14,14 +14,25 @@ const ROLES_OPCIONES = [
   { value: "AUDITOR", label: "Auditor" },
 ];
 
-export function UsuarioForm({ onSuccess, isEdit = false }: UsuarioFormProps) {
+function getButtonText(isLoading: boolean, isEdit: boolean): string {
+  if (isLoading) {
+    return "Guardando...";
+  }
+
+  if (isEdit) {
+    return "Actualizar Usuario";
+  }
+
+  return "Crear Usuario";
+}
+
+export function UsuarioForm({
+  onSuccess,
+  isEdit = false,
+}: UsuarioFormProps) {
   const { form, onSubmit, isLoading, success, error } = useUsuario();
 
-  const buttonText = isLoading
-    ? "Guardando..."
-    : isEdit
-      ? "Actualizar Usuario"
-      : "Crear Usuario";
+  const buttonText = getButtonText(isLoading, isEdit);
 
   const handleSubmit = async (data: Parameters<typeof onSubmit>[0]) => {
     await onSubmit(data);
@@ -34,7 +45,9 @@ export function UsuarioForm({ onSuccess, isEdit = false }: UsuarioFormProps) {
         {isEdit ? "Editar Usuario" : "Crear Nuevo Usuario"}
       </h1>
 
-      <p className="mb-8 text-slate-400">Gestiona los usuarios del sistema</p>
+      <p className="mb-8 text-slate-400">
+        Gestiona los usuarios del sistema
+      </p>
 
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <FormInput
