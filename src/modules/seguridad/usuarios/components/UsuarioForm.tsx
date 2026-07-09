@@ -2,10 +2,10 @@ import { useUsuario } from "../hooks/useUsuario";
 import { FormInput } from "@/shared/components/FormInput";
 import { FormSelect } from "@/shared/components/FormSelect";
 
-interface UsuarioFormProps {
+type UsuarioFormProps = Readonly<{
   onSuccess?: () => void;
   isEdit?: boolean;
-}
+}>;
 
 const ROLES_OPCIONES = [
   { value: "ADMIN", label: "Administrador" },
@@ -16,6 +16,12 @@ const ROLES_OPCIONES = [
 
 export function UsuarioForm({ onSuccess, isEdit = false }: UsuarioFormProps) {
   const { form, onSubmit, isLoading, success, error } = useUsuario();
+
+  const buttonText = isLoading
+    ? "Guardando..."
+    : isEdit
+      ? "Actualizar Usuario"
+      : "Crear Usuario";
 
   const handleSubmit = async (data: Parameters<typeof onSubmit>[0]) => {
     await onSubmit(data);
@@ -28,9 +34,7 @@ export function UsuarioForm({ onSuccess, isEdit = false }: UsuarioFormProps) {
         {isEdit ? "Editar Usuario" : "Crear Nuevo Usuario"}
       </h1>
 
-      <p className="mb-8 text-slate-400">
-        Gestiona los usuarios del sistema
-      </p>
+      <p className="mb-8 text-slate-400">Gestiona los usuarios del sistema</p>
 
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <FormInput
@@ -135,11 +139,7 @@ export function UsuarioForm({ onSuccess, isEdit = false }: UsuarioFormProps) {
           disabled={isLoading}
           className="w-full rounded-lg bg-emerald-600 py-3 font-semibold text-white transition duration-200 hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isLoading
-            ? "Guardando..."
-            : isEdit
-              ? "Actualizar Usuario"
-              : "Crear Usuario"}
+          {buttonText}
         </button>
       </form>
     </div>
