@@ -8,7 +8,7 @@ import type { UsuarioFormData } from "@/shared/schemas/formSchemas";
 export const usuarioService = {
   /**
    * Guarda un nuevo usuario.
-   * Todo: implementar POST /api/seguridad/usuarios.
+   * TODO: implementar POST /api/seguridad/usuarios.
    */
   async save(data: UsuarioFormData): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -18,7 +18,7 @@ export const usuarioService = {
 
   /**
    * Obtiene todos los usuarios.
-   * Todo: implementar GET /api/seguridad/usuarios.
+   * TODO: implementar GET /api/seguridad/usuarios.
    */
   async getAll(): Promise<UsuarioFormData[]> {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -30,7 +30,7 @@ export const usuarioService = {
 
   /**
    * Obtiene un usuario por ID.
-   * Todo: implementar GET /api/seguridad/usuarios/:id.
+   * TODO: implementar GET /api/seguridad/usuarios/:id.
    */
   async getById(id: string): Promise<UsuarioFormData | null> {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -42,7 +42,7 @@ export const usuarioService = {
 
   /**
    * Actualiza un usuario.
-   * Todo: implementar PUT /api/seguridad/usuarios/:id.
+   * TODO: implementar PUT /api/seguridad/usuarios/:id.
    */
   async update(id: string, data: UsuarioFormData): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -52,7 +52,7 @@ export const usuarioService = {
 
   /**
    * Elimina un usuario.
-   * Todo: implementar DELETE /api/seguridad/usuarios/:id.
+   * TODO: implementar DELETE /api/seguridad/usuarios/:id.
    */
   async delete(id: string): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 500));
