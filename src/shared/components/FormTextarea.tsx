@@ -1,12 +1,13 @@
-import React from "react";
+import type { TextareaHTMLAttributes } from "react";
 import type { FieldError } from "react-hook-form";
 
-interface FormTextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label: string;
-  error?: FieldError;
-  helperText?: string;
-}
+type FormTextareaProps = Readonly<
+  TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    label: string;
+    error?: FieldError;
+    helperText?: string;
+  }
+>;
 
 export function FormTextarea({
   label,
@@ -19,7 +20,10 @@ export function FormTextarea({
 
   return (
     <div className="flex flex-col gap-1">
-      <label htmlFor={textareaId} className="text-sm font-medium text-slate-300">
+      <label
+        htmlFor={textareaId}
+        className="text-sm font-medium text-slate-300"
+      >
         {label}
       </label>
 
@@ -34,9 +38,7 @@ export function FormTextarea({
         {...props}
       />
 
-      {error && (
-        <span className="text-xs text-red-400">{error.message}</span>
-      )}
+      {error && <span className="text-xs text-red-400">{error.message}</span>}
 
       {helperText && (
         <span className="text-xs text-slate-400">{helperText}</span>

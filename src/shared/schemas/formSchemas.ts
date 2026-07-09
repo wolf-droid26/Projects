@@ -12,7 +12,7 @@ export const passwordSchema = z
   .string()
   .min(8, 'La contraseña debe tener al menos 8 caracteres')
   .regex(/[A-Z]/, 'Debe incluir al menos una mayúscula')
-  .regex(/[0-9]/, 'Debe incluir al menos un número');
+  .regex(/\d/, "Debe incluir al menos un número");
 
 export const numeroDocumentoSchema = z
   .string()

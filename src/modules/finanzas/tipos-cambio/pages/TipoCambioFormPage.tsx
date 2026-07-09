@@ -42,16 +42,24 @@ export function TipoCambioFormPage() {
       >
         <div className="grid gap-5 md:grid-cols-2">
           <div>
-            <label className="text-sm text-slate-300">Moneda origen</label>
+            <label htmlFor="monedaOrigen" className="text-sm text-slate-300">
+              Moneda origen
+            </label>
+
             <input
+              id="monedaOrigen"
               className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white"
               {...form.register("monedaOrigen")}
             />
           </div>
 
           <div>
-            <label className="text-sm text-slate-300">Moneda destino</label>
+            <label htmlFor="monedaDestino" className="text-sm text-slate-300">
+              Moneda destino
+            </label>
+
             <input
+              id="monedaDestino"
               className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white"
               {...form.register("monedaDestino")}
             />
@@ -60,8 +68,12 @@ export function TipoCambioFormPage() {
 
         <div className="grid gap-5 md:grid-cols-2">
           <div>
-            <label className="text-sm text-slate-300">Precio compra</label>
+            <label htmlFor="precioCompra" className="text-sm text-slate-300">
+              Precio compra
+            </label>
+
             <input
+              id="precioCompra"
               type="number"
               step="0.0001"
               className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white"
@@ -70,8 +82,12 @@ export function TipoCambioFormPage() {
           </div>
 
           <div>
-            <label className="text-sm text-slate-300">Precio venta</label>
+            <label htmlFor="precioVenta" className="text-sm text-slate-300">
+              Precio venta
+            </label>
+
             <input
+              id="precioVenta"
               type="number"
               step="0.0001"
               className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white"
@@ -81,18 +97,27 @@ export function TipoCambioFormPage() {
         </div>
 
         <div>
-          <label className="text-sm text-slate-300">Fecha vigencia</label>
+          <label htmlFor="fechaVigencia" className="text-sm text-slate-300">
+            Fecha vigencia
+          </label>
+
           <input
+            id="fechaVigencia"
             type="date"
             className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white"
             {...form.register("fechaVigencia")}
           />
         </div>
 
-        <label className="flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-800 p-4 text-slate-300">
-          <input type="checkbox" {...form.register("activo")} />
-          Tipo de cambio activo
-        </label>
+        <div className="flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-800 p-4 text-slate-300">
+          <input
+            id="activo"
+            type="checkbox"
+            {...form.register("activo")}
+          />
+
+          <label htmlFor="activo">Tipo de cambio activo</label>
+        </div>
 
         {error && (
           <div className="rounded-xl border border-red-700 bg-red-900/30 p-4 text-red-300">

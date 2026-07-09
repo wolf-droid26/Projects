@@ -1,11 +1,13 @@
-import React from "react";
 import type { FieldError } from "react-hook-form";
+import type { InputHTMLAttributes } from "react";
 
-interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  error?: FieldError;
-  helperText?: string;
-}
+type FormInputProps = Readonly<
+  InputHTMLAttributes<HTMLInputElement> & {
+    label: string;
+    error?: FieldError;
+    helperText?: string;
+  }
+>;
 
 export function FormInput({
   label,
@@ -24,7 +26,7 @@ export function FormInput({
 
       <input
         id={inputId}
-        className={`px-3 py-2 rounded-lg bg-slate-800 border text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition ${
+        className={`rounded-lg border bg-slate-800 px-3 py-2 text-white placeholder-slate-500 transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
           error
             ? "border-red-500 focus:ring-red-500"
             : "border-slate-700 hover:border-slate-600"
@@ -33,7 +35,10 @@ export function FormInput({
       />
 
       {error && <span className="text-xs text-red-400">{error.message}</span>}
-      {helperText && <span className="text-xs text-slate-400">{helperText}</span>}
+
+      {helperText && (
+        <span className="text-xs text-slate-400">{helperText}</span>
+      )}
     </div>
   );
 }

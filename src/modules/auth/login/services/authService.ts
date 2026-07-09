@@ -1,30 +1,43 @@
 /**
- * Servicio de autenticación para Login
+ * Servicio de autenticación
  * API: POST /api/auth/login
  */
 
-import type { LoginFormInterface, LoginResponse } from '../interfaces/LoginForm';
+import type {
+  LoginFormInterface,
+  LoginResponse,
+} from "../interfaces/LoginForm";
 
 export const authService = {
   /**
-   * Autentica un usuario con email y contraseña
-   * TODO: Implementar llamada POST a /api/auth/login
+   * Autentica un usuario.
+   * Pendiente: conectar con el backend.
    */
-  async login(credentials: LoginFormInterface): Promise<LoginResponse> {
-    // Placeholder: simular delay de red
+  async login(
+    credentials: LoginFormInterface
+  ): Promise<LoginResponse> {
     await new Promise((resolve) => setTimeout(resolve, 500));
 
-    console.log('[authService.login] Autenticando usuario:', credentials.email);
+    console.log(
+      "[authService.login] Autenticando usuario:",
+      credentials.email
+    );
 
-    // TODO: Reemplazar con llamada real a API
-    // const response = await axios.post('/api/auth/login', credentials);
-    // return response.data;
+    /*
+    Cuando el backend esté listo:
 
-    // Simular respuesta de la API
+    const response = await axios.post(
+      "/api/auth/login",
+      credentials
+    );
+
+    return response.data;
+    */
+
     return {
-      token: 'mock-token-123',
+      token: "mock-token-123",
       usuario: credentials.email,
-      rol: 'user',
+      rol: "user",
     };
   },
 };

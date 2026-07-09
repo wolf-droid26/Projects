@@ -1,15 +1,17 @@
-import React from "react";
+import type { SelectHTMLAttributes } from "react";
 import type { FieldError } from "react-hook-form";
 
-interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label: string;
-  error?: FieldError;
-  options: Array<{
-    value: string;
+type FormSelectProps = Readonly<
+  SelectHTMLAttributes<HTMLSelectElement> & {
     label: string;
-  }>;
-  placeholder?: string;
-}
+    error?: FieldError;
+    options: Array<{
+      value: string;
+      label: string;
+    }>;
+    placeholder?: string;
+  }
+>;
 
 export function FormSelect({
   label,
@@ -29,7 +31,7 @@ export function FormSelect({
 
       <select
         id={selectId}
-        className={`px-3 py-2 rounded-lg bg-slate-800 border text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition ${
+        className={`rounded-lg border bg-slate-800 px-3 py-2 text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
           error
             ? "border-red-500 focus:ring-red-500"
             : "border-slate-700 hover:border-slate-600"

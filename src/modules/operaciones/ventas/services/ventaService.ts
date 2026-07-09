@@ -3,15 +3,16 @@
  * API: POST /api/operaciones/ventas
  */
 
-import type { VentaFormData } from '@/shared/schemas/formSchemas';
+import type { VentaFormData } from "@/shared/schemas/formSchemas";
 
 export const ventaService = {
   /**
-   * Registra una nueva venta
-   * TODO: Implementar POST a /api/operaciones/ventas
+   * Registra una nueva venta.
+   * Pendiente: implementar POST /api/operaciones/ventas.
    */
   async save(data: VentaFormData): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log('[ventaService.save] Registrando venta:', data);
+
+    console.log("[ventaService.save] Registrando venta:", data);
   },
 };

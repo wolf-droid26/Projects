@@ -1,158 +1,167 @@
-const fs = require('fs').promises;
-const path = require('path');
+const fs = require("node:fs/promises");
+const path = require("node:path");
 
 const root = process.cwd();
-const src = path.join(root, 'src');
+const src = path.join(root, "src");
 
 const dirsToRemove = [
-  'modules/administracion/notificaiones',
-  'modules/operaciones/tranferencias',
-  'modules/seguridad/permisos/service'
+  "modules/administracion/notificaiones",
+  "modules/operaciones/tranferencias",
+  "modules/seguridad/permisos/service",
 ];
 
 const filesToRemove = [
-  'modules/operaciones/operaciones/components/OperacionService.ts',
-  'modules/auth/sesion/interfaces/Session.ts'
+  "modules/operaciones/operaciones/components/OperacionService.ts",
+  "modules/auth/sesion/interfaces/Session.ts",
 ];
 
 const duplicateServices = [
-  'modules/administracion/configuracion/services/configuracion.service.ts',
-  'modules/administracion/dashboard/services/dashboard.service.ts',
-  'modules/auditoria/auditoria/services/auditoria.service.ts',
-  'modules/auditoria/reportes/services/reporte.service.ts',
-  'modules/auth/login/services/Login.service.ts',
-  'modules/auth/recuperacion-password/services/Recuperacion-password.service.ts',
-  'modules/auth/sesion/services/Sesion.service.ts',
-  'modules/caja/aperturacaja/services/aperturaCaja.service.ts',
-  'modules/caja/caja/services/caja.service.ts',
-  'modules/caja/cierrecaja/services/cierrecaja.service.ts',
-  'modules/caja/movimientoscaja/services/moviminetocaja.service.ts',
-  'modules/clientes/clientes/services/cliente.service.ts',
-  'modules/finanzas/bancos/services/banco.service.ts',
-  'modules/finanzas/cuentasbancarias/services/cuentabancaria.service.ts',
-  'modules/finanzas/monedas/services/moneda.service.ts',
-  'modules/finanzas/tipos-cambio/services/tipoCambio.service.ts',
-  'modules/operaciones/compras/services/compra.service.ts',
-  'modules/operaciones/comprobantes/services/comprobante.service.ts',
-  'modules/operaciones/operaciones/services/operacion.service.ts',
-  'modules/operaciones/transferencias/services/transferencia.service.ts',
-  'modules/operaciones/ventas/services/venta.service.ts',
-  'modules/seguridad/bitacora/services/bitacora.service.ts',
-  'modules/seguridad/perfil/services/perfil.service.ts',
-  'modules/seguridad/roles/services/rol.service.ts',
-  'modules/seguridad/usuarios/services/usuario.service.ts'
+  "modules/administracion/configuracion/services/configuracion.service.ts",
+  "modules/administracion/dashboard/services/dashboard.service.ts",
+  "modules/auditoria/auditoria/services/auditoria.service.ts",
+  "modules/auditoria/reportes/services/reporte.service.ts",
+  "modules/auth/login/services/Login.service.ts",
+  "modules/auth/recuperacion-password/services/Recuperacion-password.service.ts",
+  "modules/auth/sesion/services/Sesion.service.ts",
+  "modules/caja/aperturacaja/services/aperturaCaja.service.ts",
+  "modules/caja/caja/services/caja.service.ts",
+  "modules/caja/cierrecaja/services/cierrecaja.service.ts",
+  "modules/caja/movimientoscaja/services/moviminetocaja.service.ts",
+  "modules/clientes/clientes/services/cliente.service.ts",
+  "modules/finanzas/bancos/services/banco.service.ts",
+  "modules/finanzas/cuentasbancarias/services/cuentabancaria.service.ts",
+  "modules/finanzas/monedas/services/moneda.service.ts",
+  "modules/finanzas/tipos-cambio/services/tipoCambio.service.ts",
+  "modules/operaciones/compras/services/compra.service.ts",
+  "modules/operaciones/comprobantes/services/comprobante.service.ts",
+  "modules/operaciones/operaciones/services/operacion.service.ts",
+  "modules/operaciones/transferencias/services/transferencia.service.ts",
+  "modules/operaciones/ventas/services/venta.service.ts",
+  "modules/seguridad/bitacora/services/bitacora.service.ts",
+  "modules/seguridad/perfil/services/perfil.service.ts",
+  "modules/seguridad/roles/services/rol.service.ts",
+  "modules/seguridad/usuarios/services/usuario.service.ts",
 ];
 
 const renameDirs = [
-  'modules/clientes/clientes/Interfaces',
-  'modules/finanzas/monedas/Interfaces',
-  'modules/finanzas/tipos-cambio/Interfaces'
+  "modules/clientes/clientes/Interfaces",
+  "modules/finanzas/monedas/Interfaces",
+  "modules/finanzas/tipos-cambio/Interfaces",
 ];
 
-async function exists(p) {
+async function exists(targetPath) {
   try {
-    await fs.access(p);
+    await fs.access(targetPath);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }
 
-async function removeDirSafe(rel) {
-  const p = path.join(src, rel);
-  if (await exists(p)) {
-    console.log('Removing directory:', p);
-    await fs.rm(p, { recursive: true, force: true });
-  } else {
-    console.log('Not found (skip):', p);
+async function removeDirSafe(relativePath) {
+  const targetPath = path.join(src, relativePath);
+
+  if (!(await exists(targetPath))) {
+    console.log("Not found (skip):", targetPath);
+    return;
   }
+
+  console.log("Removing directory:", targetPath);
+  await fs.rm(targetPath, { recursive: true, force: true });
 }
 
-async function removeFileSafe(rel) {
-  const p = path.join(src, rel);
-  if (await exists(p)) {
-    console.log('Removing file:', p);
-    await fs.unlink(p);
-  } else {
-    console.log('Not found (skip):', p);
+async function removeFileSafe(relativePath) {
+  const targetPath = path.join(src, relativePath);
+
+  if (!(await exists(targetPath))) {
+    console.log("Not found (skip):", targetPath);
+    return;
   }
+
+  console.log("Removing file:", targetPath);
+  await fs.unlink(targetPath);
 }
 
-async function moveFile(srcRel, destRel) {
-  const from = path.join(src, srcRel);
-  const toDir = path.join(src, path.dirname(destRel));
-  const to = path.join(src, destRel);
+async function moveFile(sourceRelativePath, destinationRelativePath) {
+  const from = path.join(src, sourceRelativePath);
+  const to = path.join(src, destinationRelativePath);
+  const toDir = path.dirname(to);
+
   if (!(await exists(from))) {
-    console.log('Source not found (skip move):', from);
+    console.log("Source not found (skip move):", from);
     return false;
   }
+
   await fs.mkdir(toDir, { recursive: true });
-  console.log('Moving file:', from, '->', to);
+
+  console.log("Moving file:", from, "->", to);
   await fs.rename(from, to);
+
   return true;
 }
 
-async function renameCaseSensitive(dirRel) {
-  const dir = path.join(src, dirRel);
-  if (!(await exists(dir))) {
-    console.log('Not found (skip rename):', dir);
-    return;
-  }
-  const parent = path.dirname(dir);
-  const target = path.join(parent, path.basename(dir).toLowerCase());
+async function renameCaseSensitive(directoryRelativePath) {
+  const directoryPath = path.join(src, directoryRelativePath);
 
-  if (dir === target) {
-    console.log('Already correct case:', dir);
+  if (!(await exists(directoryPath))) {
+    console.log("Not found (skip rename):", directoryPath);
     return;
   }
 
-  // On case-insensitive FS (Windows) we need a temp name
-  const temp = path.join(parent, path.basename(dir) + '.tmp_delete_me_' + Date.now());
-  console.log('Renaming', dir, '->', temp, '->', target);
-  await fs.rename(dir, temp);
-  await fs.rename(temp, target);
+  const parentPath = path.dirname(directoryPath);
+  const targetPath = path.join(
+    parentPath,
+    path.basename(directoryPath).toLowerCase()
+  );
+
+  if (directoryPath === targetPath) {
+    console.log("Already correct case:", directoryPath);
+    return;
+  }
+
+  const tempPath = path.join(
+    parentPath,
+    `${path.basename(directoryPath)}.tmp_${Date.now()}`
+  );
+
+  console.log("Renaming:", directoryPath, "->", tempPath, "->", targetPath);
+
+  await fs.rename(directoryPath, tempPath);
+  await fs.rename(tempPath, targetPath);
 }
 
-(async () => {
-  try {
-    console.log('--- START cleanup script ---');
+async function main() {
+  console.log("--- START cleanup script ---");
 
-    // 1. Remove directories
-    for (const d of dirsToRemove) {
-      await removeDirSafe(d);
-    }
-
-    // 2. Move perfilService.ts then remove old folder
-    const perfilSrcRel = 'modules/seguridad/perfil/service/perfilService.ts';
-    const perfilDestRel = 'modules/seguridad/perfil/services/perfilService.ts';
-    const moved = await moveFile(perfilSrcRel, perfilDestRel);
-    if (moved) {
-      const oldFolder = path.join(src, 'modules/seguridad/perfil/service');
-      if (await exists(oldFolder)) {
-        console.log('Removing old folder:', oldFolder);
-        await fs.rm(oldFolder, { recursive: true, force: true });
-      }
-    }
-
-    // 3. Remove misplaced files
-    for (const f of filesToRemove) {
-      await removeFileSafe(f);
-    }
-
-    // 4. Remove duplicate .service.ts files
-    for (const f of duplicateServices) {
-      await removeFileSafe(f);
-    }
-
-    // 5. Rename Interfaces -> interfaces
-    for (const d of renameDirs) {
-      await renameCaseSensitive(d);
-    }
-
-    console.log('--- DONE cleanup script ---');
-    process.exit(0);
-  } catch (err) {
-    console.error('Error during cleanup:', err);
-    process.exit(2);
+  for (const directory of dirsToRemove) {
+    await removeDirSafe(directory);
   }
-})();
+
+  const movedPerfilService = await moveFile(
+    "modules/seguridad/perfil/service/perfilService.ts",
+    "modules/seguridad/perfil/services/perfilService.ts"
+  );
+
+  if (movedPerfilService) {
+    await removeDirSafe("modules/seguridad/perfil/service");
+  }
+
+  for (const file of filesToRemove) {
+    await removeFileSafe(file);
+  }
+
+  for (const file of duplicateServices) {
+    await removeFileSafe(file);
+  }
+
+  for (const directory of renameDirs) {
+    await renameCaseSensitive(directory);
+  }
+
+  console.log("--- DONE cleanup script ---");
+}
+
+main().catch((error) => {
+  console.error("Error during cleanup:", error);
+  process.exitCode = 1;
+});

@@ -2,13 +2,14 @@
  * Componente TipoCambioForm
  * Formulario para configurar tipos de cambio diarios
  */
+
 import { useTipoCambio } from "../hooks/useTipoCambio";
 import { FormInput } from "@/shared/components/FormInput";
 import { FormSelect } from "@/shared/components/FormSelect";
 
-interface TipoCambioFormProps {
+type TipoCambioFormProps = Readonly<{
   onSuccess?: () => void;
-}
+}>;
 
 const MONEDAS_OPCIONES = [
   { value: "USD", label: "Dólar Estadounidense (USD)" },
@@ -17,17 +18,30 @@ const MONEDAS_OPCIONES = [
   { value: "COP", label: "Peso Colombiano (COP)" },
 ];
 
-export function TipoCambioForm({ onSuccess }: TipoCambioFormProps) {
-  const { form, onSubmit, isLoading, success, error } = useTipoCambio();
+export function TipoCambioForm({
+  onSuccess,
+}: TipoCambioFormProps) {
+  const {
+    form,
+    onSubmit,
+    isLoading,
+    success,
+    error,
+  } = useTipoCambio();
 
-  const precioCompra = form.watch("precioCompra") || 0;
-  const precioVenta = form.watch("precioVenta") || 0;
+  const precioCompra = form.watch("precioCompra") ?? 0;
+  const precioVenta = form.watch("precioVenta") ?? 0;
 
   const margen = precioVenta - precioCompra;
-  const margenPorcentaje =
-    precioCompra > 0 ? ((margen / precioCompra) * 100).toFixed(2) : "0";
 
-  const handleSubmit = async (data: Parameters<typeof onSubmit>[0]) => {
+  const margenPorcentaje =
+    precioCompra > 0
+      ? ((margen / precioCompra) * 100).toFixed(2)
+      : "0";
+
+  const handleSubmit = async (
+    data: Parameters<typeof onSubmit>[0]
+  ) => {
     await onSubmit(data);
     onSuccess?.();
   };
@@ -42,7 +56,10 @@ export function TipoCambioForm({ onSuccess }: TipoCambioFormProps) {
         Actualiza los precios de compra y venta para hoy
       </p>
 
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="space-y-6"
+      >
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <FormSelect
             id="monedaOrigen"
@@ -70,7 +87,9 @@ export function TipoCambioForm({ onSuccess }: TipoCambioFormProps) {
             type="number"
             step="0.0001"
             placeholder="0.0000"
-            {...form.register("precioCompra", { valueAsNumber: true })}
+            {...form.register("precioCompra", {
+              valueAsNumber: true,
+            })}
             error={form.formState.errors.precioCompra}
           />
 
@@ -80,7 +99,9 @@ export function TipoCambioForm({ onSuccess }: TipoCambioFormProps) {
             type="number"
             step="0.0001"
             placeholder="0.0000"
-            {...form.register("precioVenta", { valueAsNumber: true })}
+            {...form.register("precioVenta", {
+              valueAsNumber: true,
+            })}
             error={form.formState.errors.precioVenta}
           />
         </div>
@@ -90,6 +111,7 @@ export function TipoCambioForm({ onSuccess }: TipoCambioFormProps) {
             <p className="font-semibold text-emerald-300">
               Margen de Ganancia
             </p>
+
             <p className="text-sm text-emerald-200">
               {margen.toFixed(4)} ({margenPorcentaje}%)
             </p>
@@ -112,7 +134,10 @@ export function TipoCambioForm({ onSuccess }: TipoCambioFormProps) {
             {...form.register("activo")}
           />
 
-          <label htmlFor="activo" className="text-sm text-slate-300">
+          <label
+            htmlFor="activo"
+            className="text-sm text-slate-300"
+          >
             Tipo de cambio activo
           </label>
         </div>
@@ -134,7 +159,9 @@ export function TipoCambioForm({ onSuccess }: TipoCambioFormProps) {
           disabled={isLoading}
           className="w-full rounded-lg bg-emerald-600 py-3 font-semibold text-white transition duration-200 hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isLoading ? "Guardando..." : "Guardar Tipo de Cambio"}
+          {isLoading
+            ? "Guardando..."
+            : "Guardar Tipo de Cambio"}
         </button>
       </form>
     </div>

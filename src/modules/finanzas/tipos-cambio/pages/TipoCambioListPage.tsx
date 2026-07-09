@@ -13,14 +13,19 @@ export function TipoCambioListPage() {
   } = useTipoCambio();
 
   useEffect(() => {
-    void cargarTiposCambio();
+    cargarTiposCambio().catch(console.error);
   }, [cargarTiposCambio]);
+
+  const handleEliminar = (id: string) => {
+    eliminarTipoCambio(id).catch(console.error);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between rounded-3xl border border-slate-800 bg-slate-950 p-6 shadow-xl">
         <div>
           <h1 className="text-3xl font-bold text-white">Tipos de Cambio</h1>
+
           <p className="mt-2 text-slate-400">
             Administra precios de compra y venta de monedas.
           </p>
@@ -81,7 +86,8 @@ export function TipoCambioListPage() {
                   </td>
                   <td className="p-4 text-right">
                     <button
-                      onClick={() => void eliminarTipoCambio(tipo.id)}
+                      type="button"
+                      onClick={() => handleEliminar(tipo.id)}
                       className="rounded-xl bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-500"
                     >
                       Eliminar

@@ -6,7 +6,7 @@ export function TipoCambioHistorialPage() {
   const { tiposCambio, isLoading, error, cargarTiposCambio } = useTipoCambio();
 
   useEffect(() => {
-    void cargarTiposCambio();
+    cargarTiposCambio().catch(console.error);
   }, [cargarTiposCambio]);
 
   return (
@@ -15,6 +15,7 @@ export function TipoCambioHistorialPage() {
         <h1 className="text-3xl font-bold text-white">
           Historial de Tipos de Cambio
         </h1>
+
         <p className="mt-2 text-slate-400">
           Consulta los tipos de cambio registrados en el sistema.
         </p>
@@ -43,6 +44,7 @@ export function TipoCambioHistorialPage() {
                 <p className="font-semibold text-white">
                   {tipo.monedaOrigen} → {tipo.monedaDestino}
                 </p>
+
                 <p className="mt-1 text-sm text-slate-400">
                   Compra: S/ {tipo.precioCompra.toFixed(4)} | Venta: S/{" "}
                   {tipo.precioVenta.toFixed(4)}
