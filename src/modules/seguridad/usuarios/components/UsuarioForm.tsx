@@ -1,1 +1,147 @@
-/**\n * Componente UsuarioForm\n * Formulario para crear y editar usuarios (admin)\n */\n\nimport { useUsuario } from '../hooks/useUsuario';\nimport { FormInput } from '@/shared/components/FormInput';\nimport { FormSelect } from '@/shared/components/FormSelect';\n\ninterface UsuarioFormProps {\n  onSuccess?: () => void;\n  isEdit?: boolean;\n}\n\nconst ROLES_OPCIONES = [\n  { value: 'ADMIN', label: 'Administrador' },\n  { value: 'CAJERO', label: 'Cajero' },\n  { value: 'OPERADOR', label: 'Operador de Cambio' },\n  { value: 'AUDITOR', label: 'Auditor' },\n];\n\nexport function UsuarioForm({ onSuccess, isEdit = false }: UsuarioFormProps) {\n  const { form, onSubmit, isLoading, success, error } = useUsuario();\n\n  const handleSubmit = async (data: any) => {\n    await onSubmit(data);\n    if (success) {\n      onSuccess?.();\n    }\n  };\n\n  return (\n    <div className=\"max-w-2xl mx-auto p-6 bg-slate-900 rounded-xl shadow-lg border border-slate-800\">\n      <h1 className=\"text-3xl font-bold text-white mb-2\">\n        {isEdit ? 'Editar Usuario' : 'Crear Nuevo Usuario'}\n      </h1>\n      <p className=\"text-slate-400 mb-8\">Gestiona los usuarios del sistema</p>\n\n      <form onSubmit={form.handleSubmit(handleSubmit)} className=\"space-y-6\">\n        {/* Email */}\n        <FormInput\n          label=\"Email\"\n          type=\"email\"\n          placeholder=\"usuario@example.com\"\n          disabled={isEdit}\n          {...form.register('email')}\n          error={form.formState.errors.email}\n          helperText=\"El email será el identificador único del usuario\"\n        />\n\n        {/* Nombre y Apellido */}\n        <div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">\n          <FormInput\n            label=\"Nombre\"\n            type=\"text\"\n            placeholder=\"Juan\"\n            {...form.register('nombre')}\n            error={form.formState.errors.nombre}\n          />\n\n          <FormInput\n            label=\"Apellido\"\n            type=\"text\"\n            placeholder=\"Pérez\"\n            {...form.register('apellido')}\n            error={form.formState.errors.apellido}\n          />\n        </div>\n\n        {/* Rol */}\n        <FormSelect\n          label=\"Rol\"\n          placeholder=\"Selecciona un rol\"\n          options={ROLES_OPCIONES}\n          {...form.register('rol')}\n          error={form.formState.errors.rol}\n        />\n\n        {/* Contraseña (Solo en creación) */}\n        {!isEdit && (\n          <>\n            <div className=\"border-t border-slate-700 pt-6\">\n              <h3 className=\"text-lg font-semibold text-white mb-4\">Contraseña</h3>\n            </div>\n\n            <FormInput\n              label=\"Contraseña\"\n              type=\"password\"\n              placeholder=\"••••••••\"\n              {...form.register('password')}\n              error={form.formState.errors.password}\n              helperText=\"Mínimo 8 caracteres, 1 mayúscula y 1 número\"\n            />\n\n            <FormInput\n              label=\"Confirmar Contraseña\"\n              type=\"password\"\n              placeholder=\"••••••••\"\n              {...form.register('confirmarPassword')}\n              error={form.formState.errors.confirmarPassword}\n            />\n          </>\n        )}\n\n        {/* Estatus */}\n        <div className=\"flex items-center gap-3 p-4 bg-slate-800 rounded-lg border border-slate-700\">\n          <input\n            type=\"checkbox\"\n            id=\"estatus\"\n            className=\"w-5 h-5 rounded border-slate-700 bg-slate-800 text-emerald-600 focus:ring-emerald-500 cursor-pointer\"\n            {...form.register('estatus')}\n          />\n          <label htmlFor=\"estatus\" className=\"text-slate-300 font-medium cursor-pointer\">\n            Usuario activo\n          </label>\n        </div>\n\n        {/* Errores */}\n        {error && (\n          <div className=\"p-4 bg-red-900/30 border border-red-700 rounded-lg text-red-200 text-sm\">\n            {error}\n          </div>\n        )}\n\n        {/* Éxito */}\n        {success && (\n          <div className=\"p-4 bg-emerald-900/30 border border-emerald-700 rounded-lg text-emerald-200 text-sm\">\n            ✓ Usuario guardado exitosamente\n          </div>\n        )}\n\n        {/* Botón Submit */}\n        <button\n          type=\"submit\"\n          disabled={isLoading}\n          className=\"w-full py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition duration-200\"\n        >\n          {isLoading ? 'Guardando...' : isEdit ? 'Actualizar Usuario' : 'Crear Usuario'}\n        </button>\n      </form>\n    </div>\n  );\n}\n
+import { useUsuario } from "../hooks/useUsuario";
+import { FormInput } from "@/shared/components/FormInput";
+import { FormSelect } from "@/shared/components/FormSelect";
+
+interface UsuarioFormProps {
+  onSuccess?: () => void;
+  isEdit?: boolean;
+}
+
+const ROLES_OPCIONES = [
+  { value: "ADMIN", label: "Administrador" },
+  { value: "CAJERO", label: "Cajero" },
+  { value: "OPERADOR", label: "Operador de Cambio" },
+  { value: "AUDITOR", label: "Auditor" },
+];
+
+export function UsuarioForm({ onSuccess, isEdit = false }: UsuarioFormProps) {
+  const { form, onSubmit, isLoading, success, error } = useUsuario();
+
+  const handleSubmit = async (data: Parameters<typeof onSubmit>[0]) => {
+    await onSubmit(data);
+    onSuccess?.();
+  };
+
+  return (
+    <div className="mx-auto max-w-2xl rounded-xl border border-slate-800 bg-slate-900 p-6 shadow-lg">
+      <h1 className="mb-2 text-3xl font-bold text-white">
+        {isEdit ? "Editar Usuario" : "Crear Nuevo Usuario"}
+      </h1>
+
+      <p className="mb-8 text-slate-400">
+        Gestiona los usuarios del sistema
+      </p>
+
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <FormInput
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="usuario@example.com"
+          disabled={isEdit}
+          {...form.register("email")}
+          error={form.formState.errors.email}
+          helperText="El email será el identificador único del usuario"
+        />
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <FormInput
+            id="nombre"
+            label="Nombre"
+            type="text"
+            placeholder="Juan"
+            {...form.register("nombre")}
+            error={form.formState.errors.nombre}
+          />
+
+          <FormInput
+            id="apellido"
+            label="Apellido"
+            type="text"
+            placeholder="Pérez"
+            {...form.register("apellido")}
+            error={form.formState.errors.apellido}
+          />
+        </div>
+
+        <FormSelect
+          id="rol"
+          label="Rol"
+          placeholder="Selecciona un rol"
+          options={ROLES_OPCIONES}
+          {...form.register("rol")}
+          error={form.formState.errors.rol}
+        />
+
+        {!isEdit && (
+          <>
+            <div className="border-t border-slate-700 pt-6">
+              <h3 className="mb-4 text-lg font-semibold text-white">
+                Contraseña
+              </h3>
+            </div>
+
+            <FormInput
+              id="password"
+              label="Contraseña"
+              type="password"
+              placeholder="••••••••"
+              {...form.register("password")}
+              error={form.formState.errors.password}
+              helperText="Mínimo 8 caracteres, 1 mayúscula y 1 número"
+            />
+
+            <FormInput
+              id="confirmarPassword"
+              label="Confirmar Contraseña"
+              type="password"
+              placeholder="••••••••"
+              {...form.register("confirmarPassword")}
+              error={form.formState.errors.confirmarPassword}
+            />
+          </>
+        )}
+
+        <div className="flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-800 p-4">
+          <input
+            id="estatus"
+            type="checkbox"
+            className="h-5 w-5 cursor-pointer rounded border-slate-700 bg-slate-800 text-emerald-600 focus:ring-emerald-500"
+            {...form.register("estatus")}
+          />
+
+          <label
+            htmlFor="estatus"
+            className="cursor-pointer font-medium text-slate-300"
+          >
+            Usuario activo
+          </label>
+        </div>
+
+        {error && (
+          <div className="rounded-lg border border-red-700 bg-red-900/30 p-4 text-sm text-red-200">
+            {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="rounded-lg border border-emerald-700 bg-emerald-900/30 p-4 text-sm text-emerald-200">
+            ✓ Usuario guardado exitosamente
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full rounded-lg bg-emerald-600 py-3 font-semibold text-white transition duration-200 hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {isLoading
+            ? "Guardando..."
+            : isEdit
+              ? "Actualizar Usuario"
+              : "Crear Usuario"}
+        </button>
+      </form>
+    </div>
+  );
+}

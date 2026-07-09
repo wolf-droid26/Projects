@@ -10,5 +10,4 @@ export interface Usuario {
   rol: string;
   estatus: boolean;
   fechaCreacion: string;
-}
-\n
+};

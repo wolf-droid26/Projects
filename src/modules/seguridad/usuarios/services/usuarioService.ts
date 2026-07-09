@@ -3,25 +3,60 @@
  * API: GET/POST /api/seguridad/usuarios
  */
 
-import type { UsuarioFormData } from '@/shared/schemas/formSchemas';
+import type { UsuarioFormData } from "@/shared/schemas/formSchemas";
 
 export const usuarioService = {
   /**
    * Guarda un nuevo usuario
-   * TODO: Implementar POST a /api/seguridad/usuarios
+   * TODO: Implementar POST /api/seguridad/usuarios
    */
   async save(data: UsuarioFormData): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log('[usuarioService.save] Guardando usuario:', data);
+
+    console.log("[usuarioService.save] Guardando usuario:", data);
   },
 
   /**
    * Obtiene todos los usuarios
-   * TODO: Implementar GET a /api/seguridad/usuarios
+   * TODO: Implementar GET /api/seguridad/usuarios
    */
-  async getAll(): Promise<any[]> {
+  async getAll(): Promise<UsuarioFormData[]> {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log('[usuarioService.getAll] Obteniendo usuarios');
+
+    console.log("[usuarioService.getAll] Obteniendo usuarios");
+
     return [];
   },
-};\n
+
+  /**
+   * Obtiene un usuario por ID
+   * TODO: Implementar GET /api/seguridad/usuarios/:id
+   */
+  async getById(id: string): Promise<UsuarioFormData | null> {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    console.log("[usuarioService.getById] Buscando usuario:", id);
+
+    return null;
+  },
+
+  /**
+   * Actualiza un usuario
+   * TODO: Implementar PUT /api/seguridad/usuarios/:id
+   */
+  async update(id: string, data: UsuarioFormData): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    console.log("[usuarioService.update] Actualizando usuario:", id, data);
+  },
+
+  /**
+   * Elimina un usuario
+   * TODO: Implementar DELETE /api/seguridad/usuarios/:id
+   */
+  async delete(id: string): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    console.log("[usuarioService.delete] Eliminando usuario:", id);
+  },
+};
